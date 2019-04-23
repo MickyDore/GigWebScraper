@@ -2,6 +2,7 @@ from urllib.request import urlopen as uReq
 from bs4 import BeautifulSoup as soup
 import os.path as fileCheck
 import csv
+import smptlib
 
 # The URL of the O2 Academy Brixton website with all upcoming events
 my_url = 'https://www.academymusicgroup.com/o2academybrixton/events/all'
@@ -31,6 +32,7 @@ class Event:
 
 old_gigs = set()  # List of old gigs
 new_gigs = set()  # List of current gigs
+new_events = set()  # List of newly added events which is empty for now
 file_exists = fileCheck.isfile(filename)  # Is there a file with old gigs?
 
 # If there is already a file with gigs
@@ -76,4 +78,26 @@ if file_exists:
     new_events = new_gigs.difference(old_gigs)  # Calculate difference between sets
 
     if len(new_events) > 0:  # If there are new gigs
-        # Send an email with the new events
+        print("Do something")  # Send an email with the new events
+        smptUser = ""
+        smptPass = ""
+
+        toAdd = smptUser
+        fromAdd = smptUser
+
+        subject = "O2 Academy Brixton - New Events Added"
+        header = "To: " + toAdd + "\n" + "From: " + fromAdd + "\n" + "Subject: " + subject
+        body = "There have been new events added."
+        for event in new_events:
+            body += event.artist + " is playing on " + event.date
+
+        s = smptlib.SMTP("smtp.gmail.com", 587)
+
+        s.ehlo()
+        s.starttls()
+        s.ehlo()
+
+        s.login(smptUser, smptPass)
+        s.sendmail(fromAdd, toAdd, header + "\n\n" + body)
+
+        s.quit()
