@@ -2,7 +2,8 @@ from urllib.request import urlopen as uReq
 from bs4 import BeautifulSoup as soup
 import os.path as fileCheck
 import csv
-import smptlib
+import smtplib
+import datetime
 
 # The URL of the O2 Academy Brixton website with all upcoming events
 my_url = 'https://www.academymusicgroup.com/o2academybrixton/events/all'
@@ -77,27 +78,32 @@ f.close()
 if file_exists:
     new_events = new_gigs.difference(old_gigs)  # Calculate difference between sets
 
+    # Whenever script is executed add information to text log
+    now = datetime.datetime.now()
+    fr = open("text_log.txt", "a+")
+    fr.write("File updated at " + now.strftime("%H:%M:%S %d-%m-%Y") + ". "
+             + str(len(new_events)) + " new events added.\n")
+
     if len(new_events) > 0:  # If there are new gigs
-        print("Do something")  # Send an email with the new events
-        smptUser = ""
-        smptPass = ""
+        smtpUser = ""  # Enter the username of the account sending the email
+        smtpPass = ""  # Enter the password of the account sending the email
 
-        toAdd = smptUser
-        fromAdd = smptUser
+        toAddress = smptUser  # Enter the email address being sent the email
+        fromAddress = smptUser  # Repeat of the email sending the email
 
-        subject = "O2 Academy Brixton - New Events Added"
-        header = "To: " + toAdd + "\n" + "From: " + fromAdd + "\n" + "Subject: " + subject
-        body = "There have been new events added."
+        subject = "O2 Academy Brixton - " + str(len(new_events)) + "New Events Added"  # Email Title
+        header = "To: " + toAddress + "\n" + "From: " + fromAddress + "\n" + "Subject: " + subject
+        body = "There have been " + str(len(new_events)) + "new events added."  # This will be the body of the email
         for event in new_events:
-            body += event.artist + " is playing on " + event.date
+            body += event.artist + " is playing on " + event.date  # Print new events
 
-        s = smptlib.SMTP("smtp.gmail.com", 587)
+        s = smptlib.SMTP("smtp.gmail.com", 587)  # Make a connection to SMTP server
 
         s.ehlo()
         s.starttls()
         s.ehlo()
 
         s.login(smptUser, smptPass)
-        s.sendmail(fromAdd, toAdd, header + "\n\n" + body)
+        s.sendmail(fromAddress, toAddress, header + "\n\n" + body)  # Send the email
 
-        s.quit()
+        s.quit()  # Close SMTP connection
