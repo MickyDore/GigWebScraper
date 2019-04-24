@@ -4,12 +4,11 @@ import os.path as fileCheck
 import csv
 import smtplib
 import datetime
+import configparser as configparser
 
-# The URL of the O2 Academy Brixton website with all upcoming events
-my_url = 'https://www.academymusicgroup.com/o2academybrixton/events/all'
-
-# Check if a previous spreadsheet exists
-filename = "gigs.csv"  # Give your output file a name
+# Read in variables from config file
+config = configparser.ConfigParser()
+config.read("config.ini")
 
 
 # Create a class for an Event object
@@ -34,11 +33,11 @@ class Event:
 old_gigs = set()  # List of old gigs
 new_gigs = set()  # List of current gigs
 new_events = set()  # List of newly added events which is empty for now
-file_exists = fileCheck.isfile(filename)  # Is there a file with old gigs?
+file_exists = fileCheck.isfile(config["settings"]["output_gigs_file"])  # Is there a file with old gigs?
 
 # If there is already a file with gigs
 if file_exists:
-    with open(filename, 'r') as fr:
+    with open(config["settings"]["output_gigs_file"], 'r') as fr:
         reader = csv.reader(fr)
         next(reader, None)  # Skip the first line, which is headers
         for row in reader:
@@ -46,7 +45,7 @@ if file_exists:
 
 # print(old_list)
 
-f = open(filename, "w")  # Create a new file to update with current gigs
+f = open(config["settings"]["output_gigs_file"], "w")  # Create a new file to update with current gigs
 headers = "artist, date\n"  # Give your spreadsheet header names
 f.write(headers)  # Add headers to spreadsheet
 
@@ -80,16 +79,16 @@ if file_exists:
 
     # Whenever script is executed add information to text log
     now = datetime.datetime.now()
-    fr = open("text_log.txt", "a+")
+    fr = open(config["settings"]["output_log_file"], "a+")
     fr.write("File updated at " + now.strftime("%H:%M:%S %d-%m-%Y") + ". "
              + str(len(new_events)) + " new events added.\n")
 
     if len(new_events) > 0:  # If there are new gigs
-        smtpUser = ""  # Enter the username of the account sending the email
-        smtpPass = ""  # Enter the password of the account sending the email
+        smtpUser = config["settings"]["smtpuser"]  # Enter the username of the account sending the email
+        smtpPass = config["settings"]["smtppass"]  # Enter the password of the account sending the email
 
-        toAddress = smptUser  # Enter the email address being sent the email
-        fromAddress = smptUser  # Repeat of the email sending the email
+        toAddress = smtpUser  # Enter the email address being sent the email
+        fromAddress = smtpUser  # Repeat of the email sending the email
 
         subject = "O2 Academy Brixton - " + str(len(new_events)) + "New Events Added"  # Email Title
         header = "To: " + toAddress + "\n" + "From: " + fromAddress + "\n" + "Subject: " + subject
@@ -97,13 +96,13 @@ if file_exists:
         for event in new_events:
             body += event.artist + " is playing on " + event.date  # Print new events
 
-        s = smptlib.SMTP("smtp.gmail.com", 587)  # Make a connection to SMTP server
+        s = smtplib.SMTP("smtp.gmail.com", 587)  # Make a connection to SMTP server
 
         s.ehlo()
         s.starttls()
         s.ehlo()
 
-        s.login(smptUser, smptPass)
+        s.login(smtpUser, smtpPass)
         s.sendmail(fromAddress, toAddress, header + "\n\n" + body)  # Send the email
 
         s.quit()  # Close SMTP connection
