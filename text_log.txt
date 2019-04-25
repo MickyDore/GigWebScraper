@@ -1,10 +1,4 @@
-File updated at 00:24:34 24-04-2019. 0 new events added.
-File updated at 00:24:41 24-04-2019. 0 new events added.
-File updated at 00:24:49 24-04-2019. 0 new events added.
-File updated at 00:25:15 24-04-2019. 0 new events added.
-File updated at 00:26:02 24-04-2019. 0 new events added.
-File updated at 20:02:57 24-04-2019. 1 new events added.
-File updated at 20:04:27 24-04-2019. 0 new events added.
-File updated at 20:05:21 24-04-2019. 0 new events added.
-File updated at 20:06:15 24-04-2019. 0 new events added.
-File updated at 20:11:09 24-04-2019. 0 new events added.
+File updated at 16:14:05 25-04-2019. Error occurred when trying to send email.
+File updated at 16:14:05 25-04-2019. 0 new events added.
+File updated at 16:19:01 25-04-2019. Error occurred when trying to send email.
+File updated at 16:26:01 25-04-2019. Error occurred when trying to send email.
