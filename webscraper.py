@@ -41,7 +41,7 @@ for gig in gig_list:
 if file_exists:
     new_events = new_gigs.difference(old_gigs)  # Calculate difference between sets
 
-    if len(new_events) >= 0:  # If there are new gigs
+    if len(new_events) > 0:  # If there are new gigs
 
         smtpUser = config["settings"]["smtpuser"]  # Enter the username of the account sending the email
         smtpPass = config["settings"]["smtppass"]  # Enter the password of the account sending the email
