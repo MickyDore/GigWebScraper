@@ -41,7 +41,7 @@ for gig in gig_list:
 if file_exists:
     new_events = new_gigs.difference(old_gigs)  # Calculate difference between sets
 
-    if len(new_events) >= 0:  # If there are new gigs
+    if len(new_events) > 0:  # If there are new gigs
 
         smtpUser = config["settings"]["smtpuser"]  # Enter the username of the account sending the email
         smtpPass = config["settings"]["smtppass"]  # Enter the password of the account sending the email
@@ -49,9 +49,9 @@ if file_exists:
         fromAddress = smtpUser  # Repeat of the email sending the email
 
         # Construct the email information
-        subject = "O2 Academy Brixton - " + str(len(new_events)) + "New Events Added"
+        subject = "O2 Academy Brixton - " + str(len(new_events)) + " New Events Added"
         header = "To: " + toAddress + "\n" + "From: " + fromAddress + "\n" + "Subject: " + subject
-        body = "There have been " + str(len(new_events)) + "new events added."
+        body = "There have been " + str(len(new_events)) + " new events added."
 
         for event in new_events:
             body += event.artist + " is playing on " + event.date
@@ -59,7 +59,7 @@ if file_exists:
         #  Try to connect to the SMTP Server and send an email
         try:
             s = smtplib.SMTP("smtp.gmail.com", 587)
-            s.ehlo()
+
             s.starttls()
             s.ehlo()
 
@@ -70,7 +70,7 @@ if file_exists:
 
             log_message = str(len(new_events)) + " new events added.\n"
             utils.add_to_log(config["settings"]["output_log_file"], datetime, log_message)
-            
+
         # If the connection fails
         except:
             log_message = "Error occurred when trying to send email.\n"
