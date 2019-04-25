@@ -70,6 +70,7 @@ if file_exists:
 
             log_message = str(len(new_events)) + " new events added.\n"
             utils.add_to_log(config["settings"]["output_log_file"], datetime, log_message)
+            
         # If the connection fails
         except:
             log_message = "Error occurred when trying to send email.\n"
