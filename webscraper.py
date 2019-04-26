@@ -51,10 +51,10 @@ if file_exists:
         # Construct the email information
         subject = "O2 Academy Brixton - " + str(len(new_events)) + " New Events Added"
         header = "To: " + toAddress + "\n" + "From: " + fromAddress + "\n" + "Subject: " + subject
-        body = "There have been " + str(len(new_events)) + " new events added."
+        body = "There have been " + str(len(new_events)) + " new events added.\n\n"
 
         for event in new_events:
-            body += event.artist + " is playing on " + event.date
+            body += event.artist + " is playing on " + event.date + ".\n"
 
         #  Try to connect to the SMTP Server and send an email
         try:
@@ -75,3 +75,5 @@ if file_exists:
         except:
             log_message = "Error occurred when trying to send email.\n"
             utils.add_to_log(config["settings"]["output_log_file"], datetime, log_message)
+    else:
+        utils.add_to_log(config["settings"]["output_log_file"], datetime, "No new events added.\n")

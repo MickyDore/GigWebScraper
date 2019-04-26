@@ -13,7 +13,7 @@ Once here, add a command to your list of cron commands to run the script as
 frequently as you like. Personally, I run the command once a day at midnight. 
 To achieve this result, enter the following command into your crontab:
 
-	0 0 * * * /your_directory/webscraper.py
+	0 0 * * * /your_directory && python3 webscraper.py
 
-
+For personal use edit the variables in the config.ini file to match your own credentials.
 	
