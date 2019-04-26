@@ -17,6 +17,9 @@ To achieve this result, enter the following command into your crontab:
 	0 0 * * * /your_directory && python3 webscraper.py
 
 	
-For personal use edit the variables in the `config.ini` file to match your own credentials. 
+For personal use edit the variables in the `config.ini` file to match your own credentials. Note that [smtplib](https://docs.python.org/3/library/smtplib.html) also needs to be downloaded and configured in order to successfully send emails.
 
-	
+
+Below is a screenshot of an example email that was sent when a new event was added.
+
+![An example of an email sent when a new event is added](/images/email.PNG?raw=true)
